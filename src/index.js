@@ -5,10 +5,15 @@ import './index.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { StyledEngineProvider } from '@mui/material/styles';
 
+import { store } from './redux/store';
+import { Provider } from 'react-redux';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
-      <ToggleColorMode />
+      <Provider store={store}>
+        <ToggleColorMode />
+      </Provider>
     </StyledEngineProvider>
   </React.StrictMode>
 );

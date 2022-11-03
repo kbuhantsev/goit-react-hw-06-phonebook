@@ -1,12 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { TextFieldStyled } from './Filter.styled';
+//
+import { useDispatch } from 'react-redux';
+import { setFilter } from '../../redux/filterSlice';
+import debounce from 'lodash.debounce';
 
-function Filter({ onInput }) {
-  const handleInput = event => {
+function Filter() {
+  const dispatch = useDispatch();
+
+  const onFilterChange = event => {
     const value = event.target.value;
-    onInput({ value });
+    dispatch(setFilter(value));
   };
+
+  const onFilterChangeDebounced = debounce(onFilterChange, 500);
 
   return (
     <TextFieldStyled
@@ -15,13 +23,9 @@ function Filter({ onInput }) {
       label="Find contacts by name"
       variant="standard"
       sx={{ marginBottom: '10px', width: '300px' }}
-      onChange={handleInput}
+      onChange={onFilterChangeDebounced}
     />
   );
 }
-
-Filter.propTypes = {
-  onInput: PropTypes.func,
-};
 
 export default Filter;

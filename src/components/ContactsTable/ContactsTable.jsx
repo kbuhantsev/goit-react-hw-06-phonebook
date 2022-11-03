@@ -10,7 +10,17 @@ import PropTypes from 'prop-types';
 
 import { StyledTableCell, StyledTableRow } from './ContactsTable.styled';
 
-function ContactsTable({ contacts, onDelete }) {
+//
+import { useDispatch } from 'react-redux';
+import { deleteContact } from '../../redux/contactsSlice';
+
+function ContactsTable({ contacts }) {
+  const dispatch = useDispatch();
+
+  const onDelete = ({ id }) => {
+    dispatch(deleteContact(id));
+  };
+
   return (
     <TableContainer component={Paper} sx={{ maxWidth: '900px' }}>
       <Table aria-label="contacts table">
@@ -53,7 +63,6 @@ ContactsTable.propTypes = {
       number: PropTypes.string,
     })
   ),
-  onDelete: PropTypes.func,
 };
 
 export default ContactsTable;

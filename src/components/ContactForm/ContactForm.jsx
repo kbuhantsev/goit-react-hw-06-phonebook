@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { customAlphabet } from 'nanoid';
 import * as Yup from 'yup';
 import { ButtonStyled, FormStyled } from './ContactForm.styled';
@@ -10,6 +9,11 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { ToastContainer, toast } from 'react-toastify';
+
+//
+import { useSelector, useDispatch } from 'react-redux';
+import { getContacts } from '../../redux/selectors';
+import { addContact } from 'redux/contactsSlice';
 
 const phoneRegExp =
   /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/;
@@ -31,7 +35,7 @@ const generateId = () => {
   return nanoid(7);
 };
 
-export default function ContactForm({ onSubmit }) {
+export default function ContactForm() {
   const {
     control,
     handleSubmit,
@@ -45,10 +49,22 @@ export default function ContactForm({ onSubmit }) {
     resolver: yupResolver(schema),
   });
 
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
+
   const onFormSubmit = data => {
     const { name, number } = data;
     const id = generateId();
-    onSubmit({ id, name, number });
+    const contact = {
+      id,
+      name,
+      number,
+    };
+    if (contacts.find(contact => contact.name === name)) {
+      toast.warning(`${name} is already in contacts`, {});
+      return;
+    }
+    dispatch(addContact(contact));
   };
 
   const onFormError = error => {
@@ -113,5 +129,3 @@ export default function ContactForm({ onSubmit }) {
     </>
   );
 }
-
-ContactForm.tropTypes = { onSubmit: PropTypes.func };
