@@ -10,17 +10,12 @@ import { useSelector } from 'react-redux';
 import { getContacts, getFilter } from '../../redux/selectors';
 
 export default function PhoneBook() {
-  // const [contacts, setContacts] = useLocalStorage(
-  //   STORAGE_KEY,
-  //   INITIAL_STATE.contacts
-  // );
-  //const [filter, setFilter] = useState('');
-
   const contacts = useSelector(getContacts);
   const filter = useSelector(getFilter);
   const theme = useTheme();
 
   const filteredContacts = useMemo(() => {
+    console.log(contacts);
     return contacts.filter(({ name }) =>
       name.toLowerCase().includes(filter.toLowerCase())
     );
