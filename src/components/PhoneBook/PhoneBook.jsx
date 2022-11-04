@@ -15,7 +15,6 @@ export default function PhoneBook() {
   const theme = useTheme();
 
   const filteredContacts = useMemo(() => {
-    console.log(contacts);
     return contacts.filter(({ name }) =>
       name.toLowerCase().includes(filter.toLowerCase())
     );
@@ -31,7 +30,7 @@ export default function PhoneBook() {
         Contacts
       </Box>
       <Filter />
-      <ContactsTable contacts={filteredContacts} />
+      {filteredContacts && <ContactsTable contacts={filteredContacts} />}
       <ToastContainer position="top-right" autoClose={2000} theme="colored" />
     </>
   );
